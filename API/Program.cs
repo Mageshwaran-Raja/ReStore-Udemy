@@ -14,6 +14,8 @@ builder.Services.AddDbContext<StoreContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"));
 });
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,7 +25,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
+
+app.UseCors(options => options.WithOrigins("http://localhost:3000/").
+    AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 
 app.UseAuthorization();
 
