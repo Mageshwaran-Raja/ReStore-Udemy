@@ -1,7 +1,7 @@
-import Catelog from "../../features/catelog/Catelog";
 import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import Header from "./Header";
 import { useState } from "react";
+import { Outlet } from "react-router";
 
 function App() {
 
@@ -25,7 +25,7 @@ function App() {
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
       <Container>
-        <Catelog/>
+        <Outlet />
       </Container>
     </ThemeProvider>
   );
