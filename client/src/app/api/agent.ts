@@ -11,7 +11,15 @@ axios.interceptors.response.use(response => {
     const {data, status} = error.response as AxiosResponse;
 
     switch (status) {
-        case 400: toast.error(data.title)
+        case 400: 
+            if(data.errors) {
+                const modalErrorState: string[] = [];
+                for (const key in data.errors) {
+                    if(data.errors[key]) modalErrorState.push(data.errors[key]);
+                }
+                throw modalErrorState.flat();
+            }
+        toast.error(data.title)
         break;
         case 401: toast.error(data.title)
         break;
