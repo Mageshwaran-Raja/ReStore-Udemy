@@ -31,8 +31,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(options => options.WithOrigins("http://localhost:3000/").
-    AllowAnyMethod().AllowCredentials().AllowAnyHeader().AllowAnyOrigin());
+// Adding Cors Policy -- updated
+app.UseCors(options => options.
+    AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(origin => true).AllowCredentials());
 
 app.UseAuthorization();
 
