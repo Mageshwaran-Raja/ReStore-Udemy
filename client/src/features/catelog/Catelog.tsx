@@ -1,24 +1,25 @@
-import { Product } from "../../app/models/Product";
 import ProductList from "./ProductList";
-import { useEffect, useState } from "react";
-import agent from "../../app/api/agent";
+import { useEffect } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { fetchProductsAsync, productSelector } from "./catalogSlice";
 
 export default function Catelog() {
 
-    const [products, setProduct] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+    // const [products, setProduct] = useState<Product[]>([]);
+    const products = useAppSelector(productSelector.selectAll);
+    const {productsLoaded, status} = useAppSelector(state => state.catalog);
+    // const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
     //   axios.get("http://localhost:5000/api/Products")
     //     .then(response => setProduct(response.data))
     //     .catch(error => console.log(error));
-        agent.Catelog.list().then(products => setProduct(products))
-            .catch(err => console.log(err))
-            .finally(() => setLoading(false));
-    }, []);
+    if(!productsLoaded) dispatch(fetchProductsAsync());
+    }, [productsLoaded, dispatch]);
 
-    if(loading) return <LoadingComponent message="Loading Products..."/>
+    if(status.includes('pending')) return <LoadingComponent message="Loading Products..."/>
 
     return (
     <>

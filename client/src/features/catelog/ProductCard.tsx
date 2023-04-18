@@ -1,27 +1,29 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
 import { Product } from "../../app/models/Product";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import agent from "../../app/api/agent";
 import { LoadingButton } from '@mui/lab';
-import { useStoreContext } from "../../app/context/StoreContext";
 import { currencyFormat } from "../../app/util/util";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { addBasketItemAsync } from "../basket/basketSlice";
 
 interface Props {
     product: Product;
 }
 
 export default function ProductCard({ product }: Props) {
-    const [loading, setLoading] = useState(false);
-    const {setBasket} = useStoreContext();
+    //const [loading, setLoading] = useState(false);
+    //const {setBasket} = useStoreContext();
+    const {status} = useAppSelector(state => state.basket);
+    const dispatch = useAppDispatch();
 
-    function handleAddItem(productId: number) {
-        setLoading(true);
-        agent.Basket.addItem(productId)
-            .then(basket => setBasket(basket))
-            .catch(err => console.log(err))
-            .finally(() => setLoading(false));
-    }
+    // function handleAddItem(productId: number) {
+    //     setLoading(true);
+    //     agent.Basket.addItem(productId)
+    //         .then(basket => dispatch(setBasket(basket)))
+    //         .catch(err => console.log(err))
+    //         .finally(() => setLoading(false));
+    // }
+
     return (
         // <ListItem key={product.id}>
         //     <ListItemAvatar>
@@ -59,8 +61,8 @@ export default function ProductCard({ product }: Props) {
             </CardContent>
             <CardActions>
                 <LoadingButton 
-                    loading={loading} 
-                    onClick={() => handleAddItem(product.id)} 
+                    loading={status.includes('pending' + product.id)} 
+                    onClick={() => dispatch(addBasketItemAsync({productId: product.id}))} 
                     size="small"
                     >
                         Add to Cart
