@@ -37,7 +37,7 @@ export default function Catelog() {
     if (status.includes('pending') || !metaData) return <LoadingComponent message="Loading Products..." />
 
     return (
-        <Grid container spacing={4}>
+        <Grid container columnSpacing={4}>
             <Grid item xs={3}>
                 <Paper sx={{ mb: 2 }}>
                     <ProductSearch />
@@ -68,7 +68,7 @@ export default function Catelog() {
                 <ProductList products={products} />
             </Grid>
             <Grid item xs={3} />
-            <Grid item xs={9}>
+            <Grid item xs={9} sx={{mb: 2}}>
                 <AppPagination 
                     metaData={metaData}
                     onPageChange={(page: number) => dispatch(setProductParams({pageNumber: page}))}
