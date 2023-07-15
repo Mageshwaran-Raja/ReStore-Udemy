@@ -10,14 +10,14 @@ import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addBasketItemAsync, removeBasketItemAsync, setBasket } from "../basket/basketSlice";
 import { fetchProductAsync, productSelector } from "./catalogSlice";
 
-export default function ProductDetail(){
-    const {basket, status} = useAppSelector(state => state.basket);
+export default function ProductDetail() {
+    const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
 
-    const {id} = useParams<{id: string}>();
+    const { id } = useParams<{ id: string }>();
     const product = useAppSelector(state => productSelector.selectById(state, id!));
     //const [product, setProduct] = useState<Product | null>(null);
-    const {status: productStatus} = useAppSelector(state => state.catalog);
+    const { status: productStatus } = useAppSelector(state => state.catalog);
     // const [loading, setLoading] = useState(true);
 
     const [quantity, setQuantity] = useState(0);
@@ -44,25 +44,25 @@ export default function ProductDetail(){
     function handleUpdateCart() {
         if (!item || quantity > item.quantity) {
             const updateQuantity = item ? quantity - item.quantity : quantity;
-            dispatch(addBasketItemAsync({productId: product?.id!, quantity: updateQuantity}))
+            dispatch(addBasketItemAsync({ productId: product?.id!, quantity: updateQuantity }))
         } else {
             const updateQuantity = item.quantity - quantity;
-            dispatch(removeBasketItemAsync({productId: product?.id!, quantity: updateQuantity}))
+            dispatch(removeBasketItemAsync({ productId: product?.id!, quantity: updateQuantity }))
         }
     }
 
-    if(productStatus.includes('pending')) return <LoadingComponent message="Loading Product..." />
+    if (productStatus.includes('pending')) return <LoadingComponent message="Loading Product..." />
 
-    if(!product) return <NotFound />
+    if (!product) return <NotFound />
 
-    return(
+    return (
         <Grid container spacing={6}>
             <Grid item xs={6}>
-                <img src={product.pictureUrl} alt={product.name} style={{width: '100%'}} />
+                <img src={product.pictureUrl} alt={product.name} style={{ width: '100%' }} />
             </Grid>
             <Grid item xs={6}>
                 <Typography variant='h3' color='secondary'>{product.name}</Typography>
-                <Divider sx={{md: 2}} />
+                <Divider sx={{ md: 2 }} />
                 <Typography variant='h4' color='secondary'>${(product.price / 100).toFixed(2)}</Typography>
                 <TableContainer>
                     <Table>
@@ -92,7 +92,7 @@ export default function ProductDetail(){
                 </TableContainer>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField  
+                        <TextField
                             variant="outlined"
                             type="number"
                             fullWidth
@@ -103,9 +103,9 @@ export default function ProductDetail(){
                     </Grid>
                     <Grid item xs={6}>
                         <LoadingButton
-                            disabled = {item?.quantity === quantity || !item && quantity === 0}
-                            loading = {status.includes('pending')}
-                            sx={{height: '55px'}}
+                            disabled={item?.quantity === quantity || !item && quantity === 0}
+                            loading={status.includes('pending')}
+                            sx={{ height: '55px' }}
                             onClick={handleUpdateCart}
                             color="primary"
                             size="large"
