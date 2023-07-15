@@ -2,8 +2,8 @@ import ProductList from "./ProductList";
 import { useEffect } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { fetchFiltersAsync, fetchProductsAsync, productSelector, setProductParams } from "./catalogSlice";
-import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Pagination, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { fetchFiltersAsync, fetchProductsAsync, productSelector, setPageNumber, setProductParams } from "./catalogSlice";
+import { Grid, Paper } from "@mui/material";
 import ProductSearch from "./ProductSearch";
 import RadioButtonGroup from "../../app/components/RadioButtonGroup";
 import CheckboxButtons from "../../app/components/CheckboxButtons";
@@ -71,7 +71,7 @@ export default function Catelog() {
             <Grid item xs={9} sx={{mb: 2}}>
                 <AppPagination 
                     metaData={metaData}
-                    onPageChange={(page: number) => dispatch(setProductParams({pageNumber: page}))}
+                    onPageChange={(page: number) => dispatch(setPageNumber({pageNumber: page}))}
                 />
             </Grid>
         </Grid>
