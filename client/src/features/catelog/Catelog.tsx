@@ -7,6 +7,7 @@ import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Gri
 import ProductSearch from "./ProductSearch";
 import RadioButtonGroup from "../../app/components/RadioButtonGroup";
 import CheckboxButtons from "../../app/components/CheckboxButtons";
+import AppPagination from "../../app/components/AppPagintion";
 
 const sortOptions = [
     { value: 'name', label: 'Alphabetical' },
@@ -18,7 +19,7 @@ export default function Catelog() {
 
     // const [products, setProduct] = useState<Product[]>([]);
     const products = useAppSelector(productSelector.selectAll);
-    const { productsLoaded, status, filtersLoaded, brands, types, productParams } = useAppSelector(state => state.catalog);
+    const { productsLoaded, status, filtersLoaded, brands, types, productParams, metaData } = useAppSelector(state => state.catalog);
     // const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
 
@@ -33,7 +34,7 @@ export default function Catelog() {
         if (!filtersLoaded) dispatch(fetchFiltersAsync());
     }, [dispatch, filtersLoaded]);
 
-    if (status.includes('pending')) return <LoadingComponent message="Loading Products..." />
+    if (status.includes('pending') || !metaData) return <LoadingComponent message="Loading Products..." />
 
     return (
         <Grid container spacing={4}>
@@ -68,17 +69,10 @@ export default function Catelog() {
             </Grid>
             <Grid item xs={3} />
             <Grid item xs={9}>
-                <Box display='flex' justifyContent="space-between" alignItems='center'>
-                    <Typography>
-                        Displaying 1-6 of 20 items
-                    </Typography>
-                    <Pagination
-                        color="secondary"
-                        size="large"
-                        count={10}
-                        page={2}
-                    />
-                </Box>
+                <AppPagination 
+                    metaData={metaData}
+                    onPageChange={(page: number) => dispatch(setProductParams({pageNumber: page}))}
+                />
             </Grid>
         </Grid>
     );
