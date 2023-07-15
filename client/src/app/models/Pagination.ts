@@ -1,6 +1,6 @@
 export interface MetaData {
     currentPage: number;
-    totalPage: number;
+    totalPages: number;
     pageSize: number;
     pageCount: number;
 }
