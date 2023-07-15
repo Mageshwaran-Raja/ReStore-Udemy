@@ -19,7 +19,7 @@ export default function Catelog() {
 
     // const [products, setProduct] = useState<Product[]>([]);
     const products = useAppSelector(productSelector.selectAll);
-    const { productsLoaded, status, filtersLoaded, brands, types, productParams, metaData } = useAppSelector(state => state.catalog);
+    const { productsLoaded, filtersLoaded, brands, types, productParams, metaData } = useAppSelector(state => state.catalog);
     // const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
 
@@ -34,7 +34,7 @@ export default function Catelog() {
         if (!filtersLoaded) dispatch(fetchFiltersAsync());
     }, [dispatch, filtersLoaded]);
 
-    if (status.includes('pending') || !metaData) return <LoadingComponent message="Loading Products..." />
+    if (!filtersLoaded) return <LoadingComponent message="Loading Products..." />
 
     return (
         <Grid container columnSpacing={4}>
@@ -69,10 +69,11 @@ export default function Catelog() {
             </Grid>
             <Grid item xs={3} />
             <Grid item xs={9} sx={{mb: 2}}>
+                {metaData &&
                 <AppPagination 
                     metaData={metaData}
                     onPageChange={(page: number) => dispatch(setPageNumber({pageNumber: page}))}
-                />
+                />}
             </Grid>
         </Grid>
     );
