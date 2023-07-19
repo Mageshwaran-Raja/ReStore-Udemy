@@ -56,6 +56,12 @@ const Catelog = {
     fetchFilters: () => requests.get('products/filters')
 }
 
+const Account = {
+    login: (values: any) => requests.post("account/login", values),
+    register: (values: any) => requests.post("account/register", values),
+    currentUser: () => requests.get("account/currentUser")
+}
+
 const TestErrors = {
     get400Error: () => requests.get('buggy/bad-request'),
     get404Error: () => requests.get('buggy/not-found'),
@@ -73,7 +79,8 @@ const Basket = {
 const agent = {
     Catelog,
     TestErrors,
-    Basket
+    Basket,
+    Account
 }
 
 export default agent;
