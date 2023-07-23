@@ -23,7 +23,7 @@ export default function Login() {
 
     async function submitForm (data: FieldValues) {
         await dispatch(signInUser(data));
-        navigate('/catalog');
+        navigate('/catelog');
     }
 
     return (
