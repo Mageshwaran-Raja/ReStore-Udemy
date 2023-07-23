@@ -17,13 +17,18 @@ export default function Login() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const {register, handleSubmit, formState: {isSubmitting, errors, isValid}} = useForm({
+    const { register, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({
         mode: 'onTouched'
     });
 
-    async function submitForm (data: FieldValues) {
-        await dispatch(signInUser(data));
-        navigate('/catelog');
+    async function submitForm(data: FieldValues) {
+        try {
+            await dispatch(signInUser(data));
+            navigate('/catelog');
+        }
+        catch (error: any) {
+            console.log(error);
+        }
     }
 
     return (
@@ -43,7 +48,7 @@ export default function Login() {
                     id="email"
                     label="Username"
                     autoFocus
-                    {...register('username', {required: 'username is required'})}
+                    {...register('username', { required: 'username is required' })}
                     error={!!errors.username} // cast the username to a boolean
                     helperText={errors?.username?.message?.toString()}
                 />
@@ -53,7 +58,7 @@ export default function Login() {
                     label="Password"
                     type="password"
                     id="password"
-                    {...register('password', {required: 'password is required'})}
+                    {...register('password', { required: 'password is required' })}
                     error={!!errors.password} // cast the username to a boolean
                     helperText={errors?.password?.message?.toString()}
                 />
